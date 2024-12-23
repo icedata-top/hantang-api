@@ -19,9 +19,9 @@ def read_root():
 async def get_video_static_by_priority(piority: int = 0):
     try:
         time_start = time.time()
-        result: List[schemas.VideoStatic] = await crud.get_video_static_by_priority(
-            piority
-        )
+        db_results = await crud.get_video_static_by_priority(piority)
+        # Convert SQLAlchemy models to Pydantic models
+        result = [schemas.VideoStatic.model_validate(video) for video in db_results]
         time_end = time.time()
         data = {
             "result": result,
