@@ -1,6 +1,7 @@
+repos:
 # export python requirements
 - repo: https://github.com/pdm-project/pdm
-  rev: 2.x.y # a PDM release exposing the hook
+  rev: 2.21.0
   hooks:
     - id: pdm-export
       # command arguments, e.g.:
