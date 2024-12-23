@@ -1,0 +1,15 @@
+[project]
+name = "hantang-api"
+version = "0.0.1"
+description = "Default template for PDM package"
+authors = [
+    {name = "Ovler", email = "ovlertheyoung@gmail.com"},
+]
+dependencies = ["SQLModel>=0.0.22", "fastapi>=0.115.6", "pre-commit>=4.0.1"]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
