@@ -61,7 +61,7 @@ async def add_video_minute_bulk(
 ):
     try:
         time_start = time.time()
-        result = await crud.add_video_minute_bulk([item.model_dump() for item in data])
+        result = await crud.add_video_minute_bulk(data)
         time_end = time.time()
         return {"result": result, "time": time_end - time_start, "status": "success"}
     except Exception as e:
