@@ -1,7 +1,5 @@
 from sqlalchemy import (
-    Boolean,
     Column,
-    ForeignKey,
     Integer,
     String,
     BigInteger,
@@ -36,9 +34,7 @@ class DimUser(Base):
 class IdentifierMap(Base):
     __tablename__ = "identifier_map"
     id = Column(BigInteger, primary_key=True, comment="ID")
-    identifier = Column(
-        String(255), nullable=False, comment="标识符", collation="utf8mb4_bin"
-    )
+    identifier = Column(String(255), nullable=False, comment="标识符")
     aid = Column(BigInteger, comment="视频的 AV 号")
     stat = Column(Integer, comment="状态")  # 只看到了1
 
@@ -57,7 +53,6 @@ class VideoDynamic(Base):
         String(255),
         nullable=False,
         comment="视频的 BV 号",
-        collation="utf8mb4_0900_ai_ci",
     )
     coin = Column(Integer, nullable=False, comment="硬币")
     favorite = Column(Integer, nullable=False, comment="收藏")
@@ -76,7 +71,6 @@ class VideoMinute(Base):
         String(255),
         nullable=False,
         comment="视频的 BV 号",
-        collation="utf8mb4_0900_ai_ci",
     )
     coin = Column(Integer, comment="硬币")
     favorite = Column(Integer, comment="收藏")
@@ -94,15 +88,12 @@ class VideoStatic(Base):
         String(50),
         nullable=False,
         comment="视频的 BV 号",
-        collation="utf8mb4_0900_ai_ci",
     )
     pubdate = Column(Integer, nullable=False, comment="投稿时间")
-    title = Column(
-        String(255), nullable=False, comment="标题", collation="utf8mb4_0900_ai_ci"
-    )
-    description = Column(Text, comment="简介", collation="utf8mb4_0900_ai_ci")
-    tag = Column(Text, comment="标签", collation="utf8mb4_0900_ai_ci")
-    pic = Column(String(255), comment="封面 URL", collation="utf8mb4_0900_ai_ci")
+    title = Column(String(255), nullable=False, comment="标题")
+    description = Column(Text, comment="简介")
+    tag = Column(Text, comment="标签")
+    pic = Column(String(255), comment="封面 URL")
     type_id = Column(Integer, comment="分区 ID")
     user_id = Column(BigInteger, comment="UP主 ID")
     priority = Column(Integer, comment="优先级")
