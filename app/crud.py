@@ -132,8 +132,7 @@ async def add_records(
         await db.commit()
         for instance in db_instances:
             await db.refresh(instance)
-        return db_instances
-
+        return [schemas.VideoMinute.model_validate(instance) for instance in db_instances]
 
 async def add_video_static(video: schemas.VideoStaticCreate):
     """Add new video static information."""
