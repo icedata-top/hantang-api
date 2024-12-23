@@ -15,7 +15,10 @@ def read_root():
     return {"Ping": "Pong", "time": 0.0, "status": "success"}
 
 
-@app.get("/get_video_static_by_priority", response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse])
+@app.get(
+    "/get_video_static_by_priority",
+    response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
+)
 async def get_video_static_by_priority(piority: int = 0):
     try:
         time_start = time.time()
@@ -33,30 +36,32 @@ async def get_video_static_by_priority(piority: int = 0):
         return {"status": "error", "message": str(e)}
 
 
-@app.post("/add_video_minute", response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse])
+@app.post(
+    "/add_video_minute",
+    response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
+)
 async def add_video_minute(
     video_minute: schemas.VideoMinuteCreate,
 ):
     try:
         time_start = time.time()
-        result = await crud.add_video_minute(
-            video_minute.model_dump()
-        )
+        result = await crud.add_video_minute(video_minute.model_dump())
         time_end = time.time()
         return {"result": result, "time": time_end - time_start, "status": "success"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
 
-@app.post("/add_video_minute_bulk", response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse])
+@app.post(
+    "/add_video_minute_bulk",
+    response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
+)
 async def add_video_minute_bulk(
     data: List[schemas.VideoMinuteCreate],
 ):
     try:
         time_start = time.time()
-        result = await crud.add_video_minute_bulk(
-            [item.model_dump() for item in data]
-        )
+        result = await crud.add_video_minute_bulk([item.model_dump() for item in data])
         time_end = time.time()
         return {"result": result, "time": time_end - time_start, "status": "success"}
     except Exception as e:
