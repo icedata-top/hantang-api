@@ -5,10 +5,24 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:6be6c0388d14071942661e76909163de7f31353d89351432b1fdd49aa1f323a8"
+content_hash = "sha256:9e040cfa2cc6a10950b9bfcc16feec7e1570962af62794409c2919fc46093792"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
+
+[[package]]
+name = "aiomysql"
+version = "0.2.0"
+requires_python = ">=3.7"
+summary = "MySQL driver for asyncio."
+groups = ["default"]
+dependencies = [
+    "PyMySQL>=1.0",
+]
+files = [
+    {file = "aiomysql-0.2.0-py3-none-any.whl", hash = "sha256:b7c26da0daf23a5ec5e0b133c03d20657276e4eae9b73e040b72787f6f6ade0a"},
+    {file = "aiomysql-0.2.0.tar.gz", hash = "sha256:558b9c26d580d08b8c5fd1be23c5231ce3aeff2dadad989540fee740253deb67"},
+]
 
 [[package]]
 name = "annotated-types"
@@ -462,6 +476,17 @@ groups = ["default"]
 files = [
     {file = "pygments-2.18.0-py3-none-any.whl", hash = "sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a"},
     {file = "pygments-2.18.0.tar.gz", hash = "sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"},
+]
+
+[[package]]
+name = "pymysql"
+version = "1.1.1"
+requires_python = ">=3.7"
+summary = "Pure Python MySQL Driver"
+groups = ["default"]
+files = [
+    {file = "PyMySQL-1.1.1-py3-none-any.whl", hash = "sha256:4de15da4c61dc132f4fb9ab763063e693d521a80fd0e87943b9a453dd4c19d6c"},
+    {file = "pymysql-1.1.1.tar.gz", hash = "sha256:e127611aaf2b417403c60bf4dc570124aeb4a57f5f37b8e95ae399a42f904cd0"},
 ]
 
 [[package]]
