@@ -31,6 +31,7 @@ async def get_video_static_by_priority(piority: int = 0):
             "time": time_end - time_start,
             "status": "success",
         }
+        print(f"Time: {time_end - time_start}")
         return data
     except Exception as e:
         return {"status": "error", "message": str(e)}
@@ -63,6 +64,7 @@ async def add_video_minute_bulk(
         time_start = time.time()
         result = await crud.add_video_minute_bulk(data)
         time_end = time.time()
+        print(f"Time: {time_end - time_start}")
         return {"result": result, "time": time_end - time_start, "status": "success"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
