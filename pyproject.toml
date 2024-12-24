@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Ovler", email = "ovlertheyoung@gmail.com"},
 ]
-dependencies = ["SQLModel>=0.0.22", "fastapi[standard]>=0.115.6", "pre-commit>=4.0.1", "pymysql>=1.1.1", "python-dotenv>=1.0.1", "sqlalchemy>=2.0.36", "aiomysql>=0.2.0"]
+dependencies = ["SQLModel>=0.0.22", "fastapi[standard]>=0.115.6", "pre-commit>=4.0.1", "pymysql>=1.1.1", "python-dotenv>=1.0.1", "sqlalchemy>=2.0.36", "aiomysql>=0.2.0", "cryptography>=44.0.0"]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "MIT"}
