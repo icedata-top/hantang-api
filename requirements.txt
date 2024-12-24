@@ -7,6 +7,7 @@ anyio==4.7.0
 certifi==2024.12.14
 cffi==1.17.1; platform_python_implementation != "PyPy"
 cfgv==3.4.0
+charset-normalizer==3.4.0
 click==8.1.8
 colorama==0.4.6; sys_platform == "win32" or platform_system == "Windows"
 cryptography==44.0.0
@@ -38,6 +39,7 @@ pymysql==1.1.1
 python-dotenv==1.0.1
 python-multipart==0.0.20
 pyyaml==6.0.2
+requests==2.32.3
 rich==13.9.4
 rich-toolkit==0.12.0
 shellingham==1.5.4
@@ -47,6 +49,7 @@ sqlmodel==0.0.22
 starlette==0.41.3
 typer==0.15.1
 typing-extensions==4.12.2
+urllib3==2.3.0
 uvicorn[standard]==0.34.0
 uvloop==0.21.0; (sys_platform != "cygwin" and sys_platform != "win32") and platform_python_implementation != "PyPy"
 virtualenv==20.28.0
