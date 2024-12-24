@@ -132,39 +132,44 @@ async def add_records(
         await db.commit()
         for instance in db_instances:
             await db.refresh(instance)
-        return [schemas.VideoMinute.model_validate(instance) for instance in db_instances]
+        return db_instances
 
 async def add_video_static(video: schemas.VideoStaticCreate):
     """Add new video static information."""
-    return await add_record(models.VideoStatic, video)
-
+    db_instance = await add_record(models.VideoStatic, video)
+    return schemas.VideoStatic.model_validate(db_instance)
 
 async def add_video_static_bulk(
     videos: List[schemas.VideoStaticCreate],
 ):
     """Add new video static information in bulk."""
-    return await add_records(models.VideoStatic, videos)
+    db_instances = await add_records(models.VideoStatic, videos)
+    return [schemas.VideoStatic.model_validate(instance) for instance in db_instances]
 
 
 async def add_video_dynamic(dynamic: schemas.VideoDynamicCreate):
     """Add new video dynamic information."""
-    return await add_record(models.VideoDynamic, dynamic)
+    db_instance =  await add_record(models.VideoDynamic, dynamic)
+    return schemas.VideoDynamic.model_validate(db_instance)
 
 
 async def add_video_dynamic_bulk(
     dynamics: List[schemas.VideoDynamicCreate],
 ):
     """Add new video dynamic information in bulk."""
-    return await add_records(models.VideoDynamic, dynamics)
+    db_instances = await add_records(models.VideoDynamic, dynamics)
+    return [schemas.VideoDynamic.model_validate(instance) for instance in db_instances]
 
 
 async def add_video_minute(minute: schemas.VideoMinuteCreate):
     """Add new video minute statistics."""
-    return await add_record(models.VideoMinute, minute)
+    db_instance = await add_record(models.VideoMinute, minute)
+    return schemas.VideoMinute.model_validate(db_instance)
 
 
 async def add_video_minute_bulk(
     minutes: List[schemas.VideoMinuteCreate],
 ):
     """Add new video minute statistics in bulk."""
-    return await add_records(models.VideoMinute, minutes)
+    db_instances = await add_records(models.VideoMinute, minutes)
+    return [schemas.VideoMinute.model_validate(instance) for instance in db_instances]
