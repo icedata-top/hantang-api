@@ -12,7 +12,7 @@ app = FastAPI()
 
 @app.get("/", response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse])
 def read_root():
-    return {"Ping": "Pong", "time": 0.0, "status": "success"}
+    return {"Ping": "Pong", "time": 0.0, "status": "success", "result": "Hello World"}
 
 
 @app.get(
