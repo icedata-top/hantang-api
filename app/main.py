@@ -15,9 +15,9 @@ def read_root():
     return {"Ping": "Pong", "time": 0.0, "status": "success", "result": "Hello World"}
 
 
-@app.get("/health")
-async def health():
-    return {"status": "healthy"}
+@app.head("/health")
+def health_check_head():
+    return {"status": "success"}
 
 
 @app.get(
