@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 import pymysql
 from . import crud, schemas
-from .schemas import SuccessResponse, ErrorResponse
 import time
 from typing import List, Union
+from .biliapi import getSingleVideoInfo
 
 pymysql.install_as_MySQLdb()
 
@@ -18,6 +18,27 @@ def read_root():
 @app.head("/health")
 def health_check_head():
     return {"status": "success"}
+
+
+@app.get(
+    "/add_video_static",
+    response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
+)
+@app.post(
+    "/add_video_static",
+    response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
+)
+async def add_video_static(avid: int = 0, bv: str = "", priority: int = 0):
+    try:
+        time_start = time.time()
+        video_data = getSingleVideoInfo(avid, bv)
+        result = await crud.add_video_static(video_data)
+        if priority:
+            video_data["priority"] = priority
+        time_end = time.time()
+        return {"result": result, "time": time_end - time_start, "status": "success"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 
 @app.get(
@@ -51,7 +72,7 @@ async def add_video_minute(
 ):
     try:
         time_start = time.time()
-        result = await crud.add_video_minute(video_minute.model_dump())
+        result = await crud.add_video_minute(video_minute)
         time_end = time.time()
         return {"result": result, "time": time_end - time_start, "status": "success"}
     except Exception as e:

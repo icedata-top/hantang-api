@@ -111,7 +111,7 @@ async def get_video_vocals(aid: int):
 async def add_record(model_cls, data: schemas.BaseModel):
     async with SessionLocal() as db:
         db_instance = model_cls(
-            **data.model_dump()
+            **data
         )
         db.add(db_instance)
         await db.commit()
