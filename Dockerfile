@@ -16,12 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENV DB_HOST=localhost \
-    DB_PORT=3306 \
-    DB_USER=root \
-    DB_PASSWORD=password \
-    DB_NAME=mydb
-
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
