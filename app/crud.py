@@ -1,8 +1,12 @@
 from sqlalchemy import select
 from datetime import date
 from . import models, schemas
-from typing import List
+from typing import List, Union
 from .database import SessionLocal
+from sqlalchemy.exc import IntegrityError
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # Get by aid
@@ -110,29 +114,47 @@ async def get_video_vocals(aid: int):
 
 async def add_record(model_cls, data: schemas.BaseModel):
     async with SessionLocal() as db:
-        db_instance = model_cls(
-            **data
-        )
-        db.add(db_instance)
-        await db.commit()
-        await db.refresh(db_instance)
-        return db_instance
+        try:
+            db_instance = model_cls(
+                **data.model_dump()
+            )
+            db.add(db_instance)
+            await db.commit()
+            await db.refresh(db_instance)
+            return db_instance
+        except IntegrityError as e:
+            await db.rollback()
+            # Re-raise the error to be handled by the caller
+            raise e
+        except Exception as e:
+            await db.rollback()
+            logger.error(f"Database error in add_record: {str(e)}")
+            raise e
 
 
 async def add_records(
-    model_cls, data_list: List[schemas.BaseModel]
+    model_cls, data_list
 ):
     async with SessionLocal() as db:
-        db_instances = [
-            model_cls(**item.model_dump()) for item in data_list
-        ]
-        for db_instance in db_instances:
-            assert isinstance(db_instance, model_cls)
-        db.add_all(db_instances)
-        await db.commit()
-        for instance in db_instances:
-            await db.refresh(instance)
-        return db_instances
+        try:
+            db_instances = [
+                model_cls(**item.model_dump()) for item in data_list
+            ]
+            for db_instance in db_instances:
+                assert isinstance(db_instance, model_cls)
+            db.add_all(db_instances)
+            await db.commit()
+            for instance in db_instances:
+                await db.refresh(instance)
+            return db_instances
+        except IntegrityError as e:
+            await db.rollback()
+            # Re-raise the error to be handled by the caller
+            raise e
+        except Exception as e:
+            await db.rollback()
+            logger.error(f"Database error in add_records: {str(e)}")
+            raise e
 
 async def add_video_static(video: schemas.VideoStaticCreate):
     """Add new video static information."""
