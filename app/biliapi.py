@@ -28,6 +28,12 @@ def getSingleVideoInfo(avid: int = 0, bv: str = '') -> dict:
     )
 
     video_info = response.json()
+
+    if video_info["code"] != 0:
+        return {'status': 'error', 'message': video_info}
+    
+    if "View" not in video_info["data"]:
+        return {'status': 'error', 'message': video_info}
     
     video_data = {
         "aid": video_info["data"]["View"]["aid"],
