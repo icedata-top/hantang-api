@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, Any
-from datetime import date
+from datetime import date, datetime, timezone
 
 class VideoStaticBase(BaseModel):
     aid: int
     bvid: str
-    pubdate: int
+    pubdate: datetime
     title: str
     description: Optional[str] = None
     tag: Optional[str] = None
@@ -13,9 +13,15 @@ class VideoStaticBase(BaseModel):
     type_id: Optional[int] = None
     user_id: Optional[int] = None
     priority: Optional[int] = None
+    updated_at: Optional[datetime] = None
 
 class VideoStaticCreate(VideoStaticBase):
-    pass
+    @field_validator("pubdate", mode="before")
+    @classmethod
+    def parse_pubdate(cls, v):
+        if isinstance(v, int):
+            return datetime.fromtimestamp(v, tz=timezone.utc)
+        return v
 
 class VideoStatic(VideoStaticBase):
     class Config:
@@ -41,9 +47,8 @@ class VideoDynamic(VideoDynamicBase):
         from_attributes = True
 
 class VideoMinuteBase(BaseModel):
-    time: int
+    time: datetime
     aid: int
-    bvid: str
     coin: int
     favorite: int
     danmaku: int
@@ -53,7 +58,12 @@ class VideoMinuteBase(BaseModel):
     like: int
 
 class VideoMinuteCreate(VideoMinuteBase):
-    pass
+    @field_validator("time", mode="before")
+    @classmethod
+    def parse_time(cls, v):
+        if isinstance(v, int):
+            return datetime.fromtimestamp(v, tz=timezone.utc)
+        return v
 
 class VideoMinute(VideoMinuteBase):
     class Config:

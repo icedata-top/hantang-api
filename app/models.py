@@ -5,6 +5,7 @@ from sqlalchemy import (
     BigInteger,
     Text,
     Date,
+    DateTime,
 )
 
 from .database import Base
@@ -65,13 +66,8 @@ class VideoDynamic(Base):
 
 class VideoMinute(Base):
     __tablename__ = "video_minute"
-    time = Column(Integer, primary_key=True, comment="记录时间戳")
+    time = Column(DateTime(timezone=True), primary_key=True, comment="记录时间戳")
     aid = Column(BigInteger, primary_key=True, comment="视频的 AV 号")
-    bvid = Column(
-        String(255),
-        nullable=False,
-        comment="视频的 BV 号",
-    )
     coin = Column(Integer, comment="硬币")
     favorite = Column(Integer, comment="收藏")
     danmaku = Column(Integer, comment="弹幕")
@@ -89,7 +85,7 @@ class VideoStatic(Base):
         nullable=False,
         comment="视频的 BV 号",
     )
-    pubdate = Column(Integer, nullable=False, comment="投稿时间")
+    pubdate = Column(DateTime(timezone=True), nullable=False, comment="投稿时间")
     title = Column(String(255), nullable=False, comment="标题")
     description = Column(Text, comment="简介")
     tag = Column(Text, comment="标签")
@@ -97,3 +93,4 @@ class VideoStatic(Base):
     type_id = Column(Integer, comment="分区 ID")
     user_id = Column(BigInteger, comment="UP主 ID")
     priority = Column(Integer, comment="优先级")
+    updated_at = Column(DateTime(timezone=True), comment="更新时间")
