@@ -5,9 +5,10 @@
 `.env` file
 
 ```env
-MYSQL_HOST = ""
-MYSQL_PORT = 3306
-MYSQL_DATABASE = ""
-MYSQL_USER = ""
-MYSQL_PASSWORD = ""
+PG_HOST     = ""
+PG_PORT     = 5432
+PG_DATABASE = ""
+PG_USER     = ""
+PG_PASSWORD = ""
+PG_SCHEMA   = "public"
 ```
