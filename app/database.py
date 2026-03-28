@@ -6,12 +6,18 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = f"mysql+aiomysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}:{os.getenv('MYSQL_PORT')}/{os.getenv('MYSQL_DATABASE')}"
+PG_SCHEMA = os.getenv("PG_SCHEMA", "public")
+
+SQLALCHEMY_DATABASE_URL = (
+    f"postgresql+asyncpg://"
+    f"{os.getenv('PG_USER')}:{os.getenv('PG_PASSWORD')}"
+    f"@{os.getenv('PG_HOST')}:{os.getenv('PG_PORT')}"
+    f"/{os.getenv('PG_DATABASE')}"
+)
 
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL,
-    pool_pre_ping=True,
-    pool_recycle=3600,
+    connect_args={"server_settings": {"search_path": PG_SCHEMA}},
 )
 
 SessionLocal = sessionmaker(
