@@ -106,7 +106,7 @@ async def get_overdue_video_minute_tasks(limit: int = 50, overdue_seconds: int =
     """
     try:
         time_start = time.time()
-        safe_limit = max(1, min(limit, 200))
+        safe_limit = max(1, min(limit, 250))
         safe_overdue_seconds = max(0, overdue_seconds)
         result = await crud.get_overdue_video_minute_tasks(
             limit=safe_limit,
