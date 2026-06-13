@@ -77,6 +77,16 @@ class VideoMinute(Base):
     like = Column(Integer, comment="点赞")
 
 
+class VideoCollectionState(Base):
+    __tablename__ = "video_collection_state"
+    aid = Column(BigInteger, primary_key=True, comment="视频的 AV 号")
+    priority = Column(Integer, nullable=False, comment="minute 采集优先级")
+    next_minute_due_at = Column(DateTime(timezone=True), comment="下一次 minute 预期采集时间")
+    last_minute_success_at = Column(DateTime(timezone=True), comment="上次 minute 采集成功时间")
+    last_view = Column(BigInteger, comment="上次记录的播放量")
+    updated_at = Column(DateTime(timezone=True), comment="更新时间")
+
+
 class VideoStatic(Base):
     __tablename__ = "video_static"
     aid = Column(BigInteger, primary_key=True, comment="视频的 AV 号")

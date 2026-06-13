@@ -69,6 +69,15 @@ class VideoMinute(VideoMinuteBase):
     class Config:
         from_attributes = True
 
+class OverdueVideoMinuteTask(BaseModel):
+    aid: int
+    priority: int
+    next_minute_due_at: datetime
+    overdue_seconds: float
+
+    class Config:
+        from_attributes = True
+
 class SuccessResponse(BaseModel):
     result: Any
     time: float

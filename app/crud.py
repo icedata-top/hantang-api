@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from . import models, schemas
 from typing import List, Union
 from .database import SessionLocal
@@ -42,6 +42,52 @@ async def get_video_static_by_priority(priority: int = 0) -> List[models.VideoSt
             )
         result = await db.execute(query)
         return result.scalars().all()
+
+
+async def get_overdue_video_minute_tasks(
+    limit: int = 50,
+    overdue_seconds: int = 30,
+    now: datetime | None = None,
+) -> List[schemas.OverdueVideoMinuteTask]:
+    """Get minute tasks whose scheduled due time is overdue by the fallback window.
+
+    This reads the adaptive collection state maintained by hantang-dynamic. The
+    SaaS minute job is only a fallback consumer, so it must not collect samples
+    that are merely due on time; it should only process rows that missed their
+    expected collection time by more than the configured grace period.
+    """
+    now = now or datetime.now(timezone.utc)
+    async with SessionLocal() as db:
+        overdue_expr = now - models.VideoCollectionState.next_minute_due_at
+        query = (
+            select(
+                models.VideoCollectionState.aid,
+                models.VideoCollectionState.priority,
+                models.VideoCollectionState.next_minute_due_at,
+                overdue_expr.label("overdue"),
+            )
+            .where(
+                models.VideoCollectionState.priority > 0,
+                models.VideoCollectionState.next_minute_due_at.isnot(None),
+                models.VideoCollectionState.next_minute_due_at
+                <= now - timedelta(seconds=overdue_seconds),
+            )
+            .order_by(
+                models.VideoCollectionState.next_minute_due_at.asc(),
+                models.VideoCollectionState.aid.asc(),
+            )
+            .limit(limit)
+        )
+        result = await db.execute(query)
+        return [
+            schemas.OverdueVideoMinuteTask(
+                aid=row.aid,
+                priority=row.priority,
+                next_minute_due_at=row.next_minute_due_at,
+                overdue_seconds=row.overdue.total_seconds(),
+            )
+            for row in result.all()
+        ]
 
 
 async def get_video_dynamic(

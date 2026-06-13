@@ -93,6 +93,32 @@ async def get_video_static_by_priority(piority: int = 0):
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 
+@app.get(
+    "/get_overdue_video_minute_tasks",
+    response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
+)
+async def get_overdue_video_minute_tasks(limit: int = 50, overdue_seconds: int = 30):
+    """Return fallback minute tasks from video_collection_state.
+
+    hantang-dynamic owns normal adaptive minute scheduling. This API is used by
+    the SaaS minute cron as a safety net and only returns tasks whose
+    next_minute_due_at is more than overdue_seconds in the past.
+    """
+    try:
+        time_start = time.time()
+        safe_limit = max(1, min(limit, 200))
+        safe_overdue_seconds = max(0, overdue_seconds)
+        result = await crud.get_overdue_video_minute_tasks(
+            limit=safe_limit,
+            overdue_seconds=safe_overdue_seconds,
+        )
+        time_end = time.time()
+        return {"result": result, "time": time_end - time_start, "status": "success"}
+    except Exception as e:
+        logger.error(f"Error getting overdue video minute tasks: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
+
 @app.post(
     "/add_video_minute",
     response_model=Union[schemas.SuccessResponse, schemas.ErrorResponse],
